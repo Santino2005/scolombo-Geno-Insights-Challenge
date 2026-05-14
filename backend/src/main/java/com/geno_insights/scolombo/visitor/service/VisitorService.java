@@ -1,5 +1,6 @@
 package com.geno_insights.scolombo.visitor.service;
 
+import com.geno_insights.scolombo.storage.SupabaseStorageService;
 import com.geno_insights.scolombo.visitor.model.dto.CreateVisitorDto;
 import com.geno_insights.scolombo.visitor.model.entity.Visitor;
 import com.geno_insights.scolombo.visitor.repository.VisitorRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class VisitorService {
 
     private final VisitorRepository visitorRepository;
+    private final SupabaseStorageService storageService;
 
     public Visitor findByDni(String dni) {
         return visitorRepository.findByDni(dni)
@@ -18,7 +20,7 @@ public class VisitorService {
     }
 
     public Visitor registerVisitor(CreateVisitorDto visitor) {
-        String photoUrl = visitor.photo().getOriginalFilename();
+        String photoUrl = storageService.uploadVisitorPhoto(visitor.photo());
         Visitor visitorToRegister = new Visitor(visitor.dni(), visitor.fullName(), visitor.company(), visitor.sector(),photoUrl);
         return visitorRepository.save(visitorToRegister);
     }

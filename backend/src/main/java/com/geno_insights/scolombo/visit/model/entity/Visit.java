@@ -33,7 +33,7 @@ public class Visit {
 
     @Column(unique = true, nullable = false)
     @Setter
-    private UUID qrToken;
+    private String qrToken;
 
     @Setter
     @Column(nullable = false)
