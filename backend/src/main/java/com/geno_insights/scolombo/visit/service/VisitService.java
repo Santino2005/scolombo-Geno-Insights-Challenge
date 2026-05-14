@@ -23,12 +23,28 @@ public class VisitService {
     ) {
 
         Visitor visitor = visitorService.findByDni(dni);
-
+        visitRepository.findByVisitorAndExitTimeIsNull(visitor)
+                .ifPresent(activeVisit -> {
+                    throw new RuntimeException("Visitor already inside");
+                });
         Visit visit = new Visit();
         visit.setVisitor(visitor);
         visit.setSector(sector);
-        visit.setQrToken(UUID.randomUUID());
+        visit.setQrToken(UUID.randomUUID().toString());
         visit.setEntryTime(LocalDateTime.now());
+
+        return visitRepository.save(visit);
+    }
+
+    public Visit registerExit(String qrToken) {
+        Visit visit = visitRepository.findByQrToken(qrToken)
+                .orElseThrow(() -> new RuntimeException("Visit not found"));
+
+        if (visit.getExitTime() != null) {
+            throw new RuntimeException("Visit already closed");
+        }
+
+        visit.setExitTime(LocalDateTime.now());
 
         return visitRepository.save(visit);
     }
