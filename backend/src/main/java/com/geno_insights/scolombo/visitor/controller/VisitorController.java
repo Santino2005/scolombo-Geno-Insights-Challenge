@@ -47,4 +47,9 @@ public class VisitorController {
         return visitorService.registerVisitor(dto);
     }
 
+    @GetMapping("/count")
+    public long countVisitors() {
+        return visitorService.countVisitors();
+    }
+
 }

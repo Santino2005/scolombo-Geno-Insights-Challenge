@@ -24,4 +24,7 @@ public class VisitorService {
         Visitor visitorToRegister = new Visitor(visitor.dni(), visitor.fullName(), visitor.company(), visitor.sector(),photoUrl);
         return visitorRepository.save(visitorToRegister);
     }
+    public long countVisitors() {
+        return visitorRepository.count();
+    }
 }

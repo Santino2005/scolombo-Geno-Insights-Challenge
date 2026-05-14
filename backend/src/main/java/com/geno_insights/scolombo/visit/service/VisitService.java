@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -48,4 +49,21 @@ public class VisitService {
 
         return visitRepository.save(visit);
     }
+
+    public Visit getCredential(String qrToken) {
+        return visitRepository.findByQrToken(qrToken)
+                .orElseThrow(() -> new RuntimeException("Visit not found"));
+    }
+
+    public List<Visit> getTodayVisits() {
+        LocalDateTime start = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime end = start.plusDays(1);
+
+        return visitRepository.findByEntryTimeBetween(start, end);
+    }
+
+    public List<Visit> getHistory() {
+        return visitRepository.findAll();
+    }
+
 }
