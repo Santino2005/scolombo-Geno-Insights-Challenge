@@ -31,12 +31,9 @@ public class Visit {
     @Column(nullable = false)
     private Sector sector;
 
-    @Setter
-    private String photoUrl;
-
     @Column(unique = true, nullable = false)
     @Setter
-    private String qrToken;
+    private UUID qrToken;
 
     @Setter
     @Column(nullable = false)

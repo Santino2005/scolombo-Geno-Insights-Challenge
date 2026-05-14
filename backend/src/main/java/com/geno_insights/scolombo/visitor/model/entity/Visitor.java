@@ -39,4 +39,19 @@ public class Visitor {
     @Column(nullable = false)
     private Sector sector;
 
+    @Setter
+    @Column(nullable = false)
+    private String photoUrl;
+
+    public Visitor(String dni, String fullName, String company, Sector sector,String photoUrl) {
+        this.dni = dni;
+        this.fullName = fullName;
+        this.company = company;
+        this.sector = sector;
+        this.photoUrl = photoUrl;
+    }
+
+    public Visitor() {
+
+    }
 }
