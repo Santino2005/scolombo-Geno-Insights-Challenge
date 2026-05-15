@@ -1,11 +1,9 @@
 package com.geno_insights.scolombo.visit.controller;
 
-import com.geno_insights.scolombo.visit.model.entity.Visit;
+import com.geno_insights.scolombo.visit.model.dto.GenerateCredentialRequest;
+import com.geno_insights.scolombo.visit.model.dto.VisitResponse;
 import com.geno_insights.scolombo.visit.service.VisitService;
-import com.geno_insights.scolombo.visitor.model.entity.Sector;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,36 +25,40 @@ public class VisitController {
     private final VisitService visitService;
 
     @PostMapping
-    public Visit generateCredential(
-            @RequestParam String dni,
-            @RequestParam Sector sector
+    public ResponseEntity<VisitResponse> generateCredential(
+            @RequestBody GenerateCredentialRequest request
     ) {
-        return visitService.generateCredential(dni, sector);
+        VisitResponse response = visitService.generateCredential(request);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/scan/{qrToken}")
-    public Visit scanQr(@PathVariable String qrToken) {
-        return visitService.scanQr(qrToken);
+    public ResponseEntity<VisitResponse> scanQr(@PathVariable String qrToken) {
+        return ResponseEntity.ok(visitService.scanQr(qrToken));
     }
 
     @GetMapping("/credential/{qrToken}")
-    public Visit getCredential(@PathVariable String qrToken) {
-        return visitService.getCredential(qrToken);
+    public ResponseEntity<VisitResponse> getCredential(
+            @PathVariable String qrToken
+    ) {
+        return ResponseEntity.ok(visitService.getCredential(qrToken));
     }
 
     @GetMapping("/credential/active/{dni}")
-    public Visit getActiveCredentialByDni(@PathVariable String dni) {
-        return visitService.getActiveCredentialByDni(dni);
+    public ResponseEntity<VisitResponse> getActiveCredentialByDni(
+            @PathVariable String dni
+    ) {
+        return ResponseEntity.ok(visitService.getActiveCredentialByDni(dni));
     }
 
     @GetMapping("/today")
-    public List<Visit> getTodayVisits() {
-        return visitService.getTodayVisits();
+    public ResponseEntity<List<VisitResponse>> getTodayVisits() {
+        return ResponseEntity.ok(visitService.getTodayVisits());
     }
 
     @GetMapping("/history")
-    public List<Visit> getHistory() {
-        return visitService.getHistory();
+    public ResponseEntity<List<VisitResponse>> getHistory() {
+        return ResponseEntity.ok(visitService.getHistory());
     }
 
     @GetMapping("/history/export")

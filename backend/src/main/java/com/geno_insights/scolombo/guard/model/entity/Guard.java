@@ -29,4 +29,9 @@ public class Guard {
     @Column(nullable = false)
     private String hashedPin;
 
+    public Guard(String userName, String hashedPin) {
+        this.userName = userName;
+        this.hashedPin = hashedPin;
+    }
+    public Guard() {}
 }

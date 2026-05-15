@@ -1,6 +1,7 @@
 package com.geno_insights.scolombo.visit.repository;
 
 import com.geno_insights.scolombo.visit.model.entity.Visit;
+import com.geno_insights.scolombo.visit.model.entity.VisitState;
 import com.geno_insights.scolombo.visitor.model.entity.Visitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,12 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
     Optional<Visit> findByVisitorAndExitTimeIsNull(Visitor visitor);
     List<Visit> findByEntryTimeBetween(LocalDateTime start, LocalDateTime end);
     Optional<Visit> findByVisitorDniAndExitTimeIsNull(String dni);
+    boolean existsByVisitorAndStatus(
+            Visitor visitor,
+            VisitState status
+    );
+    boolean existsByVisitorAndStatusIn(
+            Visitor visitor,
+            List<VisitState> statuses
+    );
 }

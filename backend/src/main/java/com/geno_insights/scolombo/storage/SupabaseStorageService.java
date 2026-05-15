@@ -1,5 +1,6 @@
 package com.geno_insights.scolombo.storage;
 
+import com.geno_insights.scolombo.config.PhotoStorage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
-public class SupabaseStorageService {
-
+public class SupabaseStorageService implements PhotoStorage {
     @Value("${supabase.url}")
     private String supabaseUrl;
 
@@ -36,14 +36,17 @@ public class SupabaseStorageService {
                     .uri(uploadUrl)
                     .header("apikey", serviceKey)
                     .header("Authorization", "Bearer " + serviceKey)
-                    .contentType(MediaType.parseMediaType(Objects.requireNonNull(photo.getContentType())))
+                    .contentType(MediaType.parseMediaType(
+                            Objects.requireNonNull(photo.getContentType())
+                    ))
                     .body(photo.getBytes())
                     .retrieve()
                     .toBodilessEntity();
 
             return supabaseUrl + "/storage/v1/object/public/" + bucket + "/" + path;
 
-        } catch (IOException exception) {
+        } catch (Exception exception) {
+            exception.printStackTrace();
             throw new RuntimeException("Could not upload visitor photo", exception);
         }
     }
