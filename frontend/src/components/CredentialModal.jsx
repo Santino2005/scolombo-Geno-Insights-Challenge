@@ -1,11 +1,7 @@
 import { QRCodeCanvas } from "qrcode.react";
 
 export default function CredentialModal({ visit, onClose }) {
-    const visitor = visit.visitor;
-
-    console.log("VISIT:", visit);
-    console.log("VISITOR:", visitor);
-    console.log("PHOTO URL:", visitor?.photoUrl);
+    const visitor = visit.visitor || visit;
 
     return (
         <div className="modal-backdrop">

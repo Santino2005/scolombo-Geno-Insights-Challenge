@@ -1,29 +1,15 @@
-import { useEffect, useState } from "react";
-import {registerEntry, getTodayVisits, getVisitHistory, downloadVisitHistoryExcel} from "../api/visitApi";
-import { createVisitor, findVisitorByDni, countVisitors } from "../api/visitorApi";
+import { useEffect, useState } from "react";import {generateCredential,getTodayVisits,getVisitHistory,downloadVisitHistoryExcel} from "../api/visitApi";import { createVisitor, findVisitorByDni, countVisitors } from "../api/visitorApi";
 
-import Navbar from "../components/Navbar";
-import AppShell from "../components/AppShell";
-import CameraCapture from "../components/CameraCapture";
-import CredentialModal from "../components/CredentialModal";
-import ScannerModal from "../components/ScannerModal";
+import Navbar from "../components/Navbar";import AppShell from "../components/AppShell";import CameraCapture from "../components/CameraCapture";import CredentialModal from "../components/CredentialModal";import ScannerModal from "../components/ScannerModal";
 
-const sectors = [
-    "Administración",
-    "Operaciones",
-    "Logística",
-    "Almacén",
-    "Seguridad",
-    "Recepción",
-    "Mantenimiento",
-];
+const sectors = [{ value: "ADMINISTRACION", label: "Administración" },{ value: "OPERACIONES", label: "Operaciones" },{ value: "LOGISTICA", label: "Logística" },{ value: "ALMACEN", label: "Almacén" },{ value: "SEGURIDAD", label: "Seguridad" },{ value: "RECEPCION", label: "Recepción" },{ value: "MANTENIMIENTO", label: "Mantenimiento" },{ value: "OTRO", label: "Otro" },];
 
 export default function GuardPage() {
     const [form, setForm] = useState({
         dni: "",
         fullName: "",
         company: "",
-        sector: "Operaciones",
+        sector: "OPERACIONES",
         photo: null,
         photoUrl: "",
     });
@@ -56,8 +42,10 @@ export default function GuardPage() {
             setTodayCount(today.data.length);
             setHistory(historyData.data);
             setTotalVisitors(total.data);
-        } catch {
-            console.log("Dashboard error");
+        } catch (error) {
+            console.error("Dashboard error:", error);
+            console.error("Response:", error.response?.data);
+            console.error("Status:", error.response?.status);
         }
     }
 
@@ -69,7 +57,7 @@ export default function GuardPage() {
                 ...form,
                 fullName: response.data.fullName,
                 company: response.data.company,
-                sector: response.data.sector || "Operaciones",
+                sector: response.data.sector || "OPERACIONES",
                 photoUrl: response.data.photoUrl || "",
                 photo: null,
             });
@@ -94,11 +82,11 @@ export default function GuardPage() {
         }
     }
 
-    async function generateCredential() {
+    async function handleGenerateCredential() {
         try {
             setLoading(true);
 
-            const response = await registerEntry(
+            const response = await generateCredential(
                 form.dni,
                 form.sector
             );
@@ -107,7 +95,8 @@ export default function GuardPage() {
             setCredentialOpen(true);
 
             await loadDashboard();
-        } catch {
+        } catch (error) {
+            console.error(error.response?.data || error);
             alert("No se pudo generar credencial");
         } finally {
             setLoading(false);
@@ -134,7 +123,7 @@ export default function GuardPage() {
             dni: "",
             fullName: "",
             company: "",
-            sector: "Operaciones",
+            sector: "OPERACIONES",
             photo: null,
             photoUrl: "",
         });
@@ -150,7 +139,7 @@ export default function GuardPage() {
 
     return (
         <AppShell>
-            <Navbar />
+            <Navbar/>
 
             <section className="card">
                 <h2 className="card-title">
@@ -194,8 +183,11 @@ export default function GuardPage() {
                     }
                 >
                     {sectors.map((sector) => (
-                        <option key={sector}>
-                            {sector}
+                        <option
+                            key={sector.value}
+                            value={sector.value}
+                        >
+                            {sector.label}
                         </option>
                     ))}
                 </select>
@@ -236,7 +228,7 @@ export default function GuardPage() {
 
                 <button
                     className="wide-button"
-                    onClick={generateCredential}
+                    onClick={handleGenerateCredential}
                 >
                     🪪 Generar credencial
                 </button>
@@ -252,7 +244,7 @@ export default function GuardPage() {
                     </button>
                 )}
 
-                <div className="divider" />
+                <div className="divider"/>
 
                 <button
                     className="wide-button"
@@ -329,21 +321,21 @@ export default function GuardPage() {
                                             : "-"}
                                     </td>
 
-                                    <td>{item.visitor?.dni || "-"}</td>
-                                    <td>{item.visitor?.fullName || "-"}</td>
-                                    <td>{item.visitor?.company || "-"}</td>
+                                    <td>{item.visitor?.dni || item.dni || "-"}</td>
+                                    <td>{item.visitor?.fullName || item.fullName || "-"}</td>
+                                    <td>{item.visitor?.company || item.company || "-"}</td>
                                     <td>{item.sector || "-"}</td>
 
                                     <td>
-                            <span
-                                className={
-                                    item.exitTime
-                                        ? "status-finished"
-                                        : "status-active"
-                                }
-                            >
-                                {item.exitTime ? "Finalizado" : "Activo"}
-                            </span>
+                        <span
+                            className={
+                                item.exitTime
+                                    ? "status-finished"
+                                    : "status-active"
+                            }
+                        >
+                            {item.exitTime ? "Finalizado" : "Activo"}
+                        </span>
                                     </td>
                                 </tr>
                             ))}

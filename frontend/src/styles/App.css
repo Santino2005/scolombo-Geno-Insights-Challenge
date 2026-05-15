@@ -24,6 +24,7 @@ body {
   background: var(--bg);
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   padding: 22px 10px;
 }
 
@@ -50,15 +51,22 @@ body {
   color: var(--muted);
   font-size: 10px;
   letter-spacing: 2px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .card {
+  width: 100%;
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, .18);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.card h1 {
+  text-align: center;
+  font-size: 26px;
+  line-height: 1.1;
+  margin: 0 0 16px;
 }
 
 .card-title {
@@ -69,14 +77,24 @@ body {
   border-bottom: 2px solid var(--accent);
 }
 
+form {
+  width: 100%;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  height: 36px;
+  border-radius: 7px;
+  font-family: inherit;
+}
+
 input,
 select {
-  width: 100%;
-  height: 34px;
   background: var(--input);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 7px;
   padding: 0 12px;
   margin-bottom: 8px;
   outline: none;
@@ -86,16 +104,7 @@ input::placeholder {
   color: var(--muted);
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 1fr 82px;
-  gap: 6px;
-}
-
 button {
-  height: 34px;
-  width: 100%;
-  border-radius: 7px;
   border: 1px solid var(--border);
   background: var(--input);
   color: var(--text);
@@ -113,6 +122,12 @@ button.secondary {
   background: var(--input);
 }
 
+.row {
+  display: grid;
+  grid-template-columns: 1fr 82px;
+  gap: 6px;
+}
+
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -120,32 +135,20 @@ button.secondary {
   margin-top: 8px;
 }
 
-.camera-label {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 1px;
-  margin: 8px 0 6px;
-}
-
-.camera {
-  width: 100%;
-  height: 128px;
-  background: black;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  object-fit: cover;
-}
-
 .divider {
   border-top: 1px solid var(--border);
-  margin: 14px 0;
+  margin: 16px 0;
+}
+
+.wide-button {
+  margin-top: 8px;
 }
 
 .navbar {
-  max-width: 390px;
+  width: 100%;
   margin: 0 auto 14px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 
@@ -160,6 +163,56 @@ button.secondary {
   display: grid;
   place-items: center;
   font-size: 13px;
+}
+
+.camera-label {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin: 8px 0 6px;
+}
+
+.camera-box {
+  display: grid;
+  gap: 8px;
+}
+
+.camera {
+  width: 100%;
+  height: 165px;
+  background: black;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.last-photo-box {
+  margin-top: 10px;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.last-photo-box p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .8px;
+}
+
+.last-visitor-photo {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+}
+
+.dashboard-section {
+  margin-top: 16px;
 }
 
 .dashboard-title {
@@ -195,39 +248,70 @@ button.secondary {
   letter-spacing: 1px;
 }
 
-.credential {
-  background: white;
-  color: #07142a;
+.history-table-wrapper {
+  margin-top: 16px;
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.history-table thead {
+  background: #0b2b4a;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px;
+  white-space: nowrap;
+}
+
+.history-table th {
+  color: var(--accent);
+  font-size: 11px;
+  text-align: left;
+  font-weight: 800;
+}
+
+.history-table td {
+  font-size: 12px;
+  color: var(--text);
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.history-table tbody tr:hover {
+  background: rgba(255, 255, 255, .04);
+}
+
+.empty-history {
   text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
 }
 
-.credential * {
-  color: #07142a;
+.status-active {
+  color: #22c55e;
+  font-weight: 700;
 }
 
-.visitor-photo {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid var(--accent);
-}
-
-@media (max-width: 430px) {
-  .page {
-    padding: 14px 6px;
-  }
-
-  .card {
-    border-radius: 10px;
-    padding: 18px;
-  }
+.status-finished {
+  color: #ef4444;
+  font-weight: 700;
 }
 
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(1, 10, 24, 0.78);
+  background: rgba(1, 10, 24, .78);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -252,7 +336,7 @@ button.secondary {
 }
 
 .credential-brand {
-  color: #ff8548;
+  color: var(--accent);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 1.6px;
@@ -265,13 +349,22 @@ button.secondary {
   margin-bottom: 14px;
 }
 
-.credential-photo {
-  width: 74px;
-  height: 74px;
+.credential-photo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.credential-photo,
+.visitor-photo {
+  width: 86px;
+  height: 86px;
   border-radius: 999px;
   object-fit: cover;
-  border: 3px solid #ff8548;
+  border: 3px solid var(--accent);
   background: #020617;
+  display: block;
 }
 
 .credential-card h3 {
@@ -282,7 +375,7 @@ button.secondary {
 
 .sector-pill {
   display: inline-block;
-  background: #ff8548;
+  background: var(--accent);
   color: white;
   padding: 5px 13px;
   border-radius: 999px;
@@ -314,92 +407,6 @@ button.secondary {
   margin-top: 10px;
 }
 
-.camera-box {
-  display: grid;
-  gap: 8px;
-}
-
-.camera {
-  width: 100%;
-  height: 165px;
-  background: black;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-@media (max-width: 430px) {
-  .camera {
-    height: 175px;
-  }
-}
-
-.history-matrix {
-  display: grid;
-  gap: 10px;
-  margin-top: 14px;
-  max-height: 320px;
-  overflow-y: auto;
-}
-
-.status-active {
-  color: #22c55e;
-}
-
-.status-finished {
-  color: #ef4444;
-}
-
-.empty-history {
-  text-align: center;
-  padding: 20px;
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  border-radius: 10px;
-}
-
-.credential-photo-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.credential-photo {
-  width: 86px;
-  height: 86px;
-  border-radius: 999px;
-  object-fit: cover;
-  border: 3px solid #ff8548;
-  background: #020617;
-  display: block;
-}
-
-.last-photo-box {
-  margin-top: 10px;
-  background: var(--input);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px;
-  text-align: center;
-}
-
-.last-photo-box p {
-  margin: 0 0 8px;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .8px;
-}
-
-.last-visitor-photo {
-  width: 100%;
-  max-height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid var(--accent);
-}
-
 .scanner-modal {
   width: 100%;
   max-width: 360px;
@@ -423,52 +430,21 @@ button.secondary {
   min-height: 260px;
 }
 
-.history-table-wrapper {
-  margin-top: 16px;
-  width: 100%;
-  overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #071f3b;
-}
+@media (max-width: 430px) {
+  .page {
+    padding: 14px 6px;
+  }
 
-.history-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 900px;
-}
+  .card {
+    border-radius: 10px;
+    padding: 18px;
+  }
 
-.history-table thead {
-  background: #0b2b4a;
-}
+  .card h1 {
+    font-size: 34px;
+  }
 
-.history-table th {
-  color: var(--accent);
-  font-size: 11px;
-  text-align: left;
-  padding: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.history-table td {
-  padding: 12px;
-  font-size: 12px;
-  color: var(--text);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  white-space: nowrap;
-}
-
-.history-table tbody tr:hover {
-  background: rgba(255,255,255,0.04);
-}
-
-.status-active {
-  color: #22c55e;
-  font-weight: 700;
-}
-
-.status-finished {
-  color: #ef4444;
-  font-weight: 700;
+  .camera {
+    height: 175px;
+  }
 }

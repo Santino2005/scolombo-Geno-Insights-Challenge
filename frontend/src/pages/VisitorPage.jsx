@@ -1,24 +1,29 @@
 import { useState } from "react";
-import { getActiveCredentialByDni, registerEntry } from "../api/visitApi";
+import {
+    getActiveCredentialByDni,
+    generateCredential,
+} from "../api/visitApi";
+
 import AppShell from "../components/AppShell";
 import Navbar from "../components/Navbar";
 import CredentialModal from "../components/CredentialModal";
 
 export default function VisitorPage() {
     const [dni, setDni] = useState("");
-    const [sector, setSector] = useState("Operaciones");
+    const [sector, setSector] = useState("OPERACIONES");
     const [visit, setVisit] = useState(null);
     const [credentialOpen, setCredentialOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const sectors = [
-        "Administración",
-        "Operaciones",
-        "Logística",
-        "Almacén",
-        "Seguridad",
-        "Recepción",
-        "Mantenimiento",
+        { value: "ADMINISTRACION", label: "Administración" },
+        { value: "OPERACIONES", label: "Operaciones" },
+        { value: "LOGISTICA", label: "Logística" },
+        { value: "ALMACEN", label: "Almacén" },
+        { value: "SEGURIDAD", label: "Seguridad" },
+        { value: "RECEPCION", label: "Recepción" },
+        { value: "MANTENIMIENTO", label: "Mantenimiento" },
+        { value: "OTRO", label: "Otro" },
     ];
 
     async function viewCredential() {
@@ -40,7 +45,7 @@ export default function VisitorPage() {
         }
     }
 
-    async function generateEntryQr() {
+    async function handleGenerateCredential() {
         if (!dni.trim()) {
             alert("Ingresá tu DNI");
             return;
@@ -48,11 +53,16 @@ export default function VisitorPage() {
 
         try {
             setLoading(true);
-            const response = await registerEntry(dni, sector);
+
+            const response = await generateCredential(
+                dni,
+                sector
+            );
 
             setVisit(response.data);
             setCredentialOpen(true);
-        } catch {
+        } catch (error) {
+            console.error(error.response?.data || error);
             alert("No se pudo generar QR de ingreso. Verificá que estés registrado.");
         } finally {
             setLoading(false);
@@ -79,15 +89,18 @@ export default function VisitorPage() {
                     onChange={(e) => setSector(e.target.value)}
                 >
                     {sectors.map((sector) => (
-                        <option key={sector} value={sector}>
-                            {sector}
+                        <option
+                            key={sector.value}
+                            value={sector.value}
+                        >
+                            {sector.label}
                         </option>
                     ))}
                 </select>
 
                 <button
                     className="primary wide-button"
-                    onClick={generateEntryQr}
+                    onClick={handleGenerateCredential}
                     disabled={loading}
                 >
                     {loading ? "Generando..." : "🎟️ Generar QR de ingreso"}
