@@ -10,3 +10,4 @@
   - Automatizar el importar datos externos o que ya tengan los que vayan a usar la app
   - Ci/CD automatico
   - Automatizaciones con gradle
+  - Dockerizar para probar en local de manera mas flexible
