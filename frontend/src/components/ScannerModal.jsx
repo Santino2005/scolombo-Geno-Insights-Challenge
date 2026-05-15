@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { registerExit } from "../api/visitApi";
+import {scanVisitQr} from "../api/visitApi";
 
 export default function ScannerModal({ onClose }) {
     const scannedRef = useRef(false);
@@ -26,8 +26,15 @@ export default function ScannerModal({ onClose }) {
             scannedRef.current = true;
 
             try {
-                await registerExit(decodedText);
-                alert("Salida registrada");
+                const response = await scanVisitQr(decodedText);
+
+                if (response.data.status === "ACTIVE") {
+                    alert("Ingreso registrado");
+                }
+
+                if (response.data.status === "ENDED") {
+                    alert("Salida registrada");
+                }
                 await scanner.clear();
                 onClose();
             } catch {

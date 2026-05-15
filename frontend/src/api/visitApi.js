@@ -6,8 +6,8 @@ export function registerEntry(dni, sector) {
     });
 }
 
-export function registerExit(qrToken) {
-    return api.put(`/visit/exit/${qrToken}`);
+export function scanVisitQr(qrToken) {
+    return api.put(`/visit/scan/${qrToken}`);
 }
 
 export function getTodayVisits() {
