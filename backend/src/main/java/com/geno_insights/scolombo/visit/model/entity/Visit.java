@@ -36,7 +36,6 @@ public class Visit {
     private String qrToken;
 
     @Setter
-    @Column(nullable = false)
     private LocalDateTime entryTime;
 
     @Setter
@@ -45,5 +44,10 @@ public class Visit {
     @ManyToOne(optional = false)
     @Setter
     private Visitor visitor;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Setter
+    private VisitState status;
 
 }

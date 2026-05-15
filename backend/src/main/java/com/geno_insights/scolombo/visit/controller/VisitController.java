@@ -23,30 +23,30 @@ import java.util.List;
 @RequestMapping("/visit")
 @RequiredArgsConstructor
 public class VisitController {
+
     private final VisitService visitService;
-    private final Logger logger = LoggerFactory.getLogger(VisitController.class);
 
     @PostMapping
-    public Visit registerEntry(
+    public Visit generateCredential(
             @RequestParam String dni,
             @RequestParam Sector sector
     ) {
-        return visitService.registerEntry(dni, sector);
+        return visitService.generateCredential(dni, sector);
     }
-    @PutMapping("/exit/{qrToken}")
-    public Visit registerExit(@PathVariable String qrToken) {
-        return visitService.registerExit(qrToken);
+
+    @PutMapping("/scan/{qrToken}")
+    public Visit scanQr(@PathVariable String qrToken) {
+        return visitService.scanQr(qrToken);
     }
 
     @GetMapping("/credential/{qrToken}")
     public Visit getCredential(@PathVariable String qrToken) {
         return visitService.getCredential(qrToken);
     }
+
     @GetMapping("/credential/active/{dni}")
     public Visit getActiveCredentialByDni(@PathVariable String dni) {
-        Visit visit = visitService.getActiveCredentialByDni(dni);
-        logger.info("Visit retrieved: {}", visit.getVisitor().getPhotoUrl());
-        return visit;
+        return visitService.getActiveCredentialByDni(dni);
     }
 
     @GetMapping("/today")
@@ -73,5 +73,4 @@ public class VisitController {
                 ))
                 .body(file);
     }
-
 }

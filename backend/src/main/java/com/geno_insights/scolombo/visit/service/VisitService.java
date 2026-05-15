@@ -2,6 +2,7 @@ package com.geno_insights.scolombo.visit.service;
 
 import com.geno_insights.scolombo.guard.service.GuardService;
 import com.geno_insights.scolombo.visit.model.entity.Visit;
+import com.geno_insights.scolombo.visit.model.entity.VisitState;
 import com.geno_insights.scolombo.visit.repository.VisitRepository;
 import com.geno_insights.scolombo.visitor.model.entity.Sector;
 import com.geno_insights.scolombo.visitor.model.entity.Visitor;
@@ -151,4 +152,35 @@ public class VisitService {
         return dateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
+    public Visit generateCredential(String dni, Sector sector) {
+        Visitor visitor = visitorService.findByDni(dni);
+
+        Visit visit = new Visit();
+
+        visit.setVisitor(visitor);
+        visit.setSector(sector);
+        visit.setQrToken(UUID.randomUUID().toString());
+        visit.setStatus(VisitState.PENDING);
+        visit.setEntryTime(null);
+        visit.setExitTime(null);
+        return visitRepository.save(visit);
+    }
+
+    public Visit scanQr(String qrToken) {
+        Visit visit = visitRepository.findByQrToken(qrToken)
+                .orElseThrow(() -> new RuntimeException("Visit not found"));
+
+        if (visit.getStatus() == VisitState.PENDING) {
+            visit.setEntryTime(LocalDateTime.now());
+            visit.setStatus(VisitState.ACTIVE);
+            return visitRepository.save(visit);
+        }
+
+        if (visit.getStatus() == VisitState.ACTIVE) {
+            visit.setExitTime(LocalDateTime.now());
+            visit.setStatus(VisitState.ENDED);
+            return visitRepository.save(visit);
+        }
+        throw new RuntimeException("Visit already ended");
+    }
 }
