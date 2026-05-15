@@ -8,3 +8,5 @@
   - Queue para evitar problemas de concurrencia
   - Separacion de Visita del codigo y de las secciones
   - Automatizar el importar datos externos o que ya tengan los que vayan a usar la app
+  - Ci/CD automatico
+  - Automatizaciones con gradle
