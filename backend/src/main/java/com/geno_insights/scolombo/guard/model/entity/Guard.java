@@ -23,7 +23,7 @@ public class Guard {
 
     @Setter
     @Column(nullable = false)
-    private String fullName;
+    private String userName;
 
     @Setter
     @Column(nullable = false)

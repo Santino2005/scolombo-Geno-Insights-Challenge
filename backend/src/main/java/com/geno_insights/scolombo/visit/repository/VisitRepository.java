@@ -15,4 +15,5 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
     Optional<Visit> findByQrToken(String qrToken);
     Optional<Visit> findByVisitorAndExitTimeIsNull(Visitor visitor);
     List<Visit> findByEntryTimeBetween(LocalDateTime start, LocalDateTime end);
+    Optional<Visit> findByVisitorDniAndExitTimeIsNull(String dni);
 }
