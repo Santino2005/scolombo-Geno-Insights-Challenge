@@ -125,9 +125,14 @@ public class VisitService {
                 rowIndex++;
             }
 
-            for (int i = 0; i < 8; i++) {
-                sheet.autoSizeColumn(i);
-            }
+            sheet.setColumnWidth(0, 5000);
+            sheet.setColumnWidth(1, 4000);
+            sheet.setColumnWidth(2, 4000);
+            sheet.setColumnWidth(3, 5000);
+            sheet.setColumnWidth(4, 8000);
+            sheet.setColumnWidth(5, 7000);
+            sheet.setColumnWidth(6, 6000);
+            sheet.setColumnWidth(7, 5000);
 
             workbook.write(outputStream);
             return outputStream.toByteArray();

@@ -7,6 +7,8 @@ import com.geno_insights.scolombo.visitor.repository.VisitorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class VisitorService {
@@ -19,11 +21,34 @@ public class VisitorService {
                 .orElseThrow(() -> new RuntimeException("Visitor not found"));
     }
 
-    public Visitor registerVisitor(CreateVisitorDto visitor) {
-        String photoUrl = storageService.uploadVisitorPhoto(visitor.photo());
-        Visitor visitorToRegister = new Visitor(visitor.dni(), visitor.fullName(), visitor.company(), visitor.sector(),photoUrl);
+    public Visitor registerVisitor(CreateVisitorDto visitorDto) {
+        Optional<Visitor> existingVisitor =
+                visitorRepository.findByDni(visitorDto.dni());
+
+        String photoUrl = storageService.uploadVisitorPhoto(visitorDto.photo());
+
+        if (existingVisitor.isPresent()) {
+            Visitor visitor = existingVisitor.get();
+
+            visitor.setFullName(visitorDto.fullName());
+            visitor.setCompany(visitorDto.company());
+            visitor.setSector(visitorDto.sector());
+            visitor.setPhotoUrl(photoUrl);
+
+            return visitorRepository.save(visitor);
+        }
+
+        Visitor visitorToRegister = new Visitor(
+                visitorDto.dni(),
+                visitorDto.fullName(),
+                visitorDto.company(),
+                visitorDto.sector(),
+                photoUrl
+        );
+
         return visitorRepository.save(visitorToRegister);
     }
+
     public long countVisitors() {
         return visitorRepository.count();
     }
