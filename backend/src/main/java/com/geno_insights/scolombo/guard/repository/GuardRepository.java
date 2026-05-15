@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface GuardRepository extends JpaRepository<Guard, UUID> {
 
-    Optional<Guard> findByFullName(String fullName);
+    Optional<Guard> findByUserName(String username);
 }
