@@ -11,3 +11,4 @@
   - Ci/CD automatico
   - Automatizaciones con gradle
   - Dockerizar para probar en local de manera mas flexible
+  - Mejorar UI de Login
